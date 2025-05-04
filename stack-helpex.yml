@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  helpex:
+    image: helpex-app:latest
+    build: .
+    hostname: "helpex.{{.Task.Slot}}"
+    networks:
+      - network_swarm_public
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.helpex.rule=Host(`helpex.seudominio.com.br`)
+        - traefik.http.routers.helpex.entrypoints=websecure
+        - traefik.http.routers.helpex.tls.certresolver=letsencryptresolver
+        - traefik.http.services.helpex.loadbalancer.server.port=3000
+        - traefik.http.services.helpex.loadbalancer.passHostHeader=true
+        - traefik.http.routers.helpex.service=helpex
+    env_file:
+      - .env
+    restart: unless-stopped
+
+networks:
+  network_swarm_public:
+    external: true
+    name: network_swarm_public

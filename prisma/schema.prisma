@@ -1,0 +1,217 @@
+// Schema Prisma para o Sistema de Gerenciamento de Clientes da HELPEX
+// Baseado no PRD definido
+
+// Configuração do datasource (usando PostgreSQL como no Supabase)
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Gerador do cliente Prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Modelos de dados (tabelas)
+
+// Modelo para Clientes
+model Cliente {
+  id              String    @id @default(uuid())
+  razaoSocial     String
+  nomeFantasia    String?
+  cnpjCpf         String    @unique
+  tipoPessoa      TipoPessoa
+  segmento        String?
+  dataCadastro    DateTime  @default(now())
+  dataAtualizacao DateTime  @updatedAt
+  origemCliente   String?
+  status          StatusCliente @default(ATIVO)
+  
+  // Relacionamentos
+  contatos            Contato[]
+  enderecos           Endereco[]
+  servicosContratados ServicoContratado[]
+  observacoes         String?
+  tags                String[]
+
+  @@map("clientes")
+}
+
+// Modelo para Contatos dos Clientes
+model Contato {
+  id         String  @id @default(uuid())
+  clienteId  String
+  nome       String
+  cargo      String?
+  email      String
+  telefone   String?
+  whatsapp   String?
+  isPrincipal Boolean @default(false)
+  
+  // Relacionamento com Cliente
+  cliente    Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+
+  @@map("contatos")
+}
+
+// Modelo para Endereços dos Clientes
+model Endereco {
+  id          String      @id @default(uuid())
+  clienteId   String
+  cep         String
+  logradouro  String
+  numero      String
+  complemento String?
+  bairro      String
+  cidade      String
+  estado      String
+  tipo        TipoEndereco
+  
+  // Relacionamento com Cliente
+  cliente     Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+
+  @@map("enderecos")
+}
+
+// Modelo para Produtos oferecidos pela HELPEX
+model Produto {
+  id                  String  @id @default(uuid())
+  nome                String  @unique
+  descricao           String?
+  urlAcesso           String
+  parametrosNecessarios String[]
+  
+  // Relacionamentos
+  servicosContratados ServicoContratado[]
+
+  @@map("produtos")
+}
+
+// Modelo para Serviços Contratados pelos Clientes
+model ServicoContratado {
+  id                 String           @id @default(uuid())
+  clienteId          String
+  produtoId          String
+  dataContratacao    DateTime         @default(now())
+  dataVencimento     DateTime?
+  plano              String
+  valorMensal        Decimal          @db.Decimal(10, 2)
+  status             StatusServico    @default(ATIVO)
+  periodoFaturamento PeriodoFaturamento
+  
+  // Relacionamentos
+  cliente            Cliente          @relation(fields: [clienteId], references: [id])
+  produto            Produto          @relation(fields: [produtoId], references: [id])
+  credenciais        Credencial[]
+  historico          HistoricoServico[]
+
+  @@map("servicos_contratados")
+}
+
+// Modelo para Credenciais dos serviços
+model Credencial {
+  id                  String        @id @default(uuid())
+  servicoContratadoId String
+  usuario             String
+  senhaHash           String
+  dataCriacao         DateTime      @default(now())
+  ultimoAcesso        DateTime?
+  status              StatusCredencial @default(ATIVO)
+  urlAcesso           String?
+  
+  // Relacionamento com Serviço Contratado
+  servicoContratado   ServicoContratado @relation(fields: [servicoContratadoId], references: [id], onDelete: Cascade)
+
+  @@map("credenciais")
+}
+
+// Modelo para histórico de alterações nos serviços
+model HistoricoServico {
+  id                  String   @id @default(uuid())
+  servicoContratadoId String
+  dataAlteracao       DateTime @default(now())
+  tipoAlteracao       String
+  detalhes            String?
+  usuarioId           String
+  
+  // Relacionamento com Serviço Contratado
+  servicoContratado   ServicoContratado @relation(fields: [servicoContratadoId], references: [id], onDelete: Cascade)
+  usuario             Usuario           @relation(fields: [usuarioId], references: [id])
+
+  @@map("historico_servicos")
+}
+
+// Modelo para Usuários do sistema
+model Usuario {
+  id                String      @id @default(uuid())
+  nome              String
+  email             String      @unique
+  senhaHash         String
+  cargo             String?
+  perfilAcesso      PerfilAcesso
+  dataCadastro      DateTime    @default(now())
+  ultimoAcesso      DateTime?
+  status            StatusUsuario @default(ATIVO)
+  empresa_id        String?     // Campo para armazenar o ID da empresa atual do usuário
+  
+  // Relacionamentos
+  historicoServicos HistoricoServico[]
+
+  @@map("usuarios")
+}
+
+// Enums para tipagem dos dados
+enum TipoPessoa {
+  PF
+  PJ
+}
+
+enum StatusCliente {
+  ATIVO
+  INATIVO
+  PROSPECTO
+  CANCELADO
+}
+
+enum TipoEndereco {
+  COMERCIAL
+  COBRANCA
+  ENTREGA
+  OUTRO
+}
+
+enum StatusServico {
+  ATIVO
+  SUSPENSO
+  CANCELADO
+  TRIAL
+  INADIMPLENTE
+}
+
+enum PeriodoFaturamento {
+  MENSAL
+  TRIMESTRAL
+  SEMESTRAL
+  ANUAL
+}
+
+enum StatusCredencial {
+  ATIVO
+  INATIVO
+  EXPIRADO
+  BLOQUEADO
+}
+
+enum PerfilAcesso {
+  ADMIN
+  GERENTE
+  COMERCIAL
+  SUPORTE
+  FINANCEIRO
+}
+
+enum StatusUsuario {
+  ATIVO
+  INATIVO
+  BLOQUEADO
+}
