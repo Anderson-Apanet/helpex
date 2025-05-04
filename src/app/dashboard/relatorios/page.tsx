@@ -2,6 +2,11 @@
 
 import DashboardHeader from "../page";
 
+// Função placeholder para evitar erro de build
+function exportarRelatorio() {
+  alert('Funcionalidade de exportação em breve!');
+}
+
 export default function Relatorios() {
   return (
     <div>
