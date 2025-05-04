@@ -5,12 +5,21 @@ import { supabase } from "../../../lib/supabase";
 import Link from "next/link";
 import Modal from "../../../components/Modal";
 
+// Declare a interface para Cliente
+interface Cliente {
+  id: string;
+  razao_social: string;
+  nome_fantasia: string;
+  cnpj_cpf: string;
+  status: string;
+}
+
 export default function Clientes() {
-  const [clientes, setClientes] = useState<any[]>([]);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [clienteToDelete, setClienteToDelete] = useState<string|null>(null);
+  const [clienteToDelete, setClienteToDelete] = useState<string | null>(null);
 
   const handleDeleteClick = (id: string) => {
     setClienteToDelete(id);

@@ -3,17 +3,21 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Dashboard() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (data?.user) {
-        setUser(data.user);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        setUser({ id: user.id, email: user.email ?? "" });
       } else {
         router.push("/login");
       }
@@ -30,7 +34,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-[#181f2a] text-white font-sans">
       <header className="bg-[#181f2a] border-b border-[#3b82f6] p-6 flex justify-between items-center shadow-lg">
         <div className="flex items-center gap-4">
-          <img src="https://dieycvogftvfoncigvtl.supabase.co/storage/v1/object/public/imagens//HELPEX%20BRANCO.png" alt="HELPEX Logo" className="h-10 w-auto drop-shadow-lg" />
+          <Image src="https://dieycvogftvfoncigvtl.supabase.co/storage/v1/object/public/imagens//HELPEX%20BRANCO.png" alt="HELPEX Logo" width={100} height={50} className="h-10 w-auto drop-shadow-lg" />
         </div>
         <div className="flex items-center gap-4">
           <span className="font-mono text-lg text-[#3b82f6]"> {user?.email} </span>
@@ -47,10 +51,10 @@ export default function Dashboard() {
       </header>
       <main className="max-w-5xl mx-auto p-8">
         <nav className="flex flex-wrap gap-6 justify-center mb-10">
-          <a href="/dashboard/clientes" className="border border-[#3b82f6] bg-[#232526] text-[#3b82f6] px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 hover:bg-[#181f2a] hover:text-white transition-all">Clientes</a>
-          <a href="/dashboard/servicos" className="border border-[#3b82f6] bg-[#232526] text-[#3b82f6] px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 hover:bg-[#181f2a] hover:text-white transition-all">Serviços</a>
-          <a href="/dashboard/credenciais" className="border border-[#3b82f6] bg-[#232526] text-[#3b82f6] px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 hover:bg-[#181f2a] hover:text-white transition-all">Credenciais</a>
-          <a href="/dashboard/relatorios" className="border border-[#3b82f6] bg-[#232526] text-[#3b82f6] px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 hover:bg-[#181f2a] hover:text-white transition-all">Relatórios</a>
+          <Link href="/dashboard/clientes" className="border border-[#3b82f6] bg-[#232526] text-[#3b82f6] px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 hover:bg-[#181f2a] hover:text-white transition-all">Clientes</Link>
+          <Link href="/dashboard/servicos" className="border border-[#3b82f6] bg-[#232526] text-[#3b82f6] px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 hover:bg-[#181f2a] hover:text-white transition-all">Serviços</Link>
+          <Link href="/dashboard/credenciais" className="border border-[#3b82f6] bg-[#232526] text-[#3b82f6] px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 hover:bg-[#181f2a] hover:text-white transition-all">Credenciais</Link>
+          <Link href="/dashboard/relatorios" className="border border-[#3b82f6] bg-[#232526] text-[#3b82f6] px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:scale-105 hover:bg-[#181f2a] hover:text-white transition-all">Relatórios</Link>
         </nav>
         <section className="text-center">
           <h2 className="text-3xl font-bold mb-4 text-[#3b82f6]">Bem-vindo ao sistema de gestão HELPEX!</h2>

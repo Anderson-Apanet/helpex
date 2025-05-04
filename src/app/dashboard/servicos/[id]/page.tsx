@@ -16,6 +16,15 @@ export default function EditarServico() {
   // Tipagem explícita para evitar erro de TS
   type Cliente = { id: string; razao_social: string };
   type Produto = { id: string; nome: string };
+  type ServicoContratado = {
+    id: string;
+    cliente_id: string;
+    produto_id: string;
+    plano: string;
+    status: string;
+    produto: { nome: string };
+    cliente: { razao_social: string };
+  };
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,11 +71,11 @@ export default function EditarServico() {
     if (id) fetchData();
   }, [id]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
     setError("");

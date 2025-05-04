@@ -5,8 +5,21 @@ import { supabase } from "../../../lib/supabase";
 import Link from "next/link";
 import Modal from "../../../components/Modal";
 
+// Importe ou declare interfaces para Serviço conforme necessário
+interface Servico {
+  id: number;
+  cliente: {
+    razao_social: string;
+  };
+  produto: {
+    nome: string;
+  };
+  plano: string;
+  status: string;
+}
+
 export default function Servicos() {
-  const [servicos, setServicos] = useState<any[]>([]);
+  const [servicos, setServicos] = useState<Servico[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);

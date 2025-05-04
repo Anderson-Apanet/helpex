@@ -23,7 +23,7 @@ services:
           memory: 512M
       labels:
         - traefik.enable=true
-        - traefik.http.routers.helpex.rule=Host(`helpex.seudominio.com.br`)
+        - traefik.http.routers.helpex.rule=Host(`adm.helpex.com.br`)
         - traefik.http.routers.helpex.entrypoints=websecure
         - traefik.http.routers.helpex.tls.certresolver=letsencryptresolver
         - traefik.http.services.helpex.loadbalancer.server.port=3000

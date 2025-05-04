@@ -4,14 +4,35 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../../lib/supabase";
 
+// Importe ou declare interfaces para Serviço conforme necessário
+interface Cliente {
+  id: number;
+  razao_social: string;
+}
+
+interface Produto {
+  id: number;
+  nome: string;
+}
+
+interface ServicoContratado {
+  cliente_id: number;
+  produto_id: number;
+  plano: string;
+  valor_mensal: number;
+  status: string;
+  data_vencimento: string | null;
+  periodo_faturamento: string;
+}
+
 export default function NovoServico() {
-  const [clientes, setClientes] = useState<any[]>([]);
-  const [produtos, setProdutos] = useState<any[]>([]);
-  const [form, setForm] = useState({
-    cliente_id: "",
-    produto_id: "",
+  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [form, setForm] = useState<ServicoContratado>({
+    cliente_id: 0,
+    produto_id: 0,
     plano: "",
-    valor_mensal: "",
+    valor_mensal: 0,
     status: "ATIVO",
     data_vencimento: "",
     periodo_faturamento: "MENSAL",
@@ -22,10 +43,14 @@ export default function NovoServico() {
 
   useEffect(() => {
     const fetchClientesProdutos = async () => {
-      const { data: clientesData } = await supabase.from("clientes").select("id, razao_social");
-      const { data: produtosData } = await supabase.from("produtos").select("id, nome");
-      setClientes(clientesData || []);
-      setProdutos(produtosData || []);
+      const { data: clientesData, error: clientesError } = await supabase.from<Cliente, Cliente[]>("clientes").select("id, razao_social");
+      const { data: produtosData, error: produtosError } = await supabase.from<Produto, Produto[]>("produtos").select("id, nome");
+      if (clientesError || produtosError) {
+        console.error("Erro ao buscar clientes ou produtos:", clientesError || produtosError);
+      } else {
+        setClientes(clientesData || []);
+        setProdutos(produtosData || []);
+      }
     };
     fetchClientesProdutos();
   }, []);
@@ -38,12 +63,12 @@ export default function NovoServico() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const { error } = await supabase.from("servicos_contratados").insert([
+    const { error } = await supabase.from<ServicoContratado, ServicoContratado[]>("servicos_contratados").insert([
       {
         cliente_id: form.cliente_id,
         produto_id: form.produto_id,
         plano: form.plano,
-        valor_mensal: parseFloat(form.valor_mensal.replace(",", ".")),
+        valor_mensal: parseFloat(form.valor_mensal.toString().replace(",", ".")),
         status: form.status,
         data_vencimento: form.data_vencimento ? new Date(form.data_vencimento).toISOString() : null,
         periodo_faturamento: form.periodo_faturamento,
@@ -64,10 +89,17 @@ export default function NovoServico() {
         <form onSubmit={handleSubmit}>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Cliente*</span>
-            <select name="cliente_id" value={form.cliente_id} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+            <select
+              id="cliente_id"
+              name="cliente_id"
+              value={form.cliente_id?.toString() || ""}
+              onChange={e => setForm({ ...form, cliente_id: Number(e.target.value) })}
+              required
+              className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none"
+            >
               <option value="">Selecione...</option>
-              {clientes.map((c) => (
-                <option key={c.id} value={c.id}>{c.razao_social}</option>
+              {clientes.map(cliente => (
+                <option key={cliente.id} value={cliente.id}>{cliente.razao_social}</option>
               ))}
             </select>
           </label>
@@ -75,8 +107,8 @@ export default function NovoServico() {
             <span className="font-semibold neon-blue">Produto*</span>
             <select name="produto_id" value={form.produto_id} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
               <option value="">Selecione...</option>
-              {produtos.map((p) => (
-                <option key={p.id} value={p.id}>{p.nome}</option>
+              {produtos.map(produto => (
+                <option key={produto.id} value={produto.id}>{produto.nome}</option>
               ))}
             </select>
           </label>

@@ -5,8 +5,21 @@ import { supabase } from "../../../lib/supabase";
 import DashboardHeader from "../page";
 import Link from "next/link";
 
+// Importe ou declare interfaces para Credencial conforme necessário
+interface Credencial {
+  id: number;
+  servico: {
+    cliente: {
+      razao_social: string;
+    };
+    plano: string;
+  };
+  usuario: string;
+  status: string;
+}
+
 export default function Credenciais() {
-  const [credenciais, setCredenciais] = useState<any[]>([]);
+  const [credenciais, setCredenciais] = useState<Credencial[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 

@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
+
+interface User {
+  email: string;
+  password: string;
+  nome: string;
+}
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -24,7 +31,7 @@ export default function Login() {
   const router = useRouter();
 
   // Login handler
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -38,7 +45,7 @@ export default function Login() {
   };
 
   // Register handler
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setRegisterLoading(true);
     setRegisterError("");
@@ -59,7 +66,7 @@ export default function Login() {
   };
 
   // Forgot password handler
-  const handleForgot = async (e: React.FormEvent) => {
+  const handleForgot = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setForgotLoading(true);
     setForgotError("");
@@ -78,7 +85,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0f2027] via-[#232526] to-[#2c5364] text-white font-sans p-4">
       <div className="flex flex-col items-center mb-8">
-        <img src="https://dieycvogftvfoncigvtl.supabase.co/storage/v1/object/public/imagens//HELPEX%20BRANCO.png" alt="HELPEX Logo" className="h-16 w-auto mb-4 drop-shadow-lg" style={{filter: 'drop-shadow(0 0 10px #4f6df5)'}} />
+        <Image src="https://dieycvogftvfoncigvtl.supabase.co/storage/v1/object/public/imagens//HELPEX%20BRANCO.png" alt="HELPEX Logo" className="h-16 w-auto mb-4 drop-shadow-lg" style={{filter: 'drop-shadow(0 0 10px #4f6df5)'}} width={100} height={50} />
       </div>
       <div className="bg-[#181f2a] border border-[#4f6df5] neon-blue rounded-xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
         {!showRegister && !showForgot && (

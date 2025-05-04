@@ -20,9 +20,5 @@ export default function Header() {
   );
 }
 
-<style>
-  .neon-blue { text-shadow: 0 0 8px #3b82f6, 0 0 12px #60a5fa; color: #3b82f6; }
-  .neon-orange { text-shadow: 0 0 6px #f58a42, 0 0 10px #ffd700; color: #f58a42; }
-  .animate-fade-in { animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-</style>
+// Estilos globais devem ir para o globals.css ou equivalente, não inline em arquivos React.
+// As classes .neon-blue, .neon-orange, .animate-fade-in e keyframes fadeIn já devem estar no globals.css.
