@@ -43,8 +43,9 @@ export default function NovoServico() {
 
   useEffect(() => {
     const fetchClientesProdutos = async () => {
-      const { data: clientesData, error: clientesError } = await supabase.from<Cliente, Cliente[]>("clientes").select("id, razao_social");
-      const { data: produtosData, error: produtosError } = await supabase.from<Produto, Produto[]>("produtos").select("id, nome");
+      // Removido tipo genérico, deixe o TS inferir
+      const { data: clientesData, error: clientesError } = await supabase.from("clientes").select("id, razao_social");
+      const { data: produtosData, error: produtosError } = await supabase.from("produtos").select("id, nome");
       if (clientesError || produtosError) {
         console.error("Erro ao buscar clientes ou produtos:", clientesError || produtosError);
       } else {
@@ -63,7 +64,7 @@ export default function NovoServico() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const { error } = await supabase.from<ServicoContratado, ServicoContratado[]>("servicos_contratados").insert([
+    const { error } = await supabase.from("servicos_contratados").insert([
       {
         cliente_id: form.cliente_id,
         produto_id: form.produto_id,
