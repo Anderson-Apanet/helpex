@@ -91,7 +91,6 @@ export default function NovoServico() {
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Cliente*</span>
             <select
-              id="cliente_id"
               name="cliente_id"
               value={form.cliente_id?.toString() || ""}
               onChange={e => setForm({ ...form, cliente_id: Number(e.target.value) })}
@@ -106,7 +105,13 @@ export default function NovoServico() {
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Produto*</span>
-            <select name="produto_id" value={form.produto_id} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+            <select
+              name="produto_id"
+              value={form.produto_id?.toString() || ""}
+              onChange={e => setForm({ ...form, produto_id: Number(e.target.value) })}
+              required
+              className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none"
+            >
               <option value="">Selecione...</option>
               {produtos.map(produto => (
                 <option key={produto.id} value={produto.id}>{produto.nome}</option>
@@ -115,19 +120,19 @@ export default function NovoServico() {
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Plano*</span>
-            <input name="plano" value={form.plano} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <input name="plano" value={form.plano || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Valor Mensal (R$)*</span>
-            <input name="valor_mensal" value={form.valor_mensal} onChange={handleChange} required type="number" step="0.01" min="0" className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <input name="valor_mensal" value={form.valor_mensal?.toString() || ""} onChange={e => setForm({ ...form, valor_mensal: Number(e.target.value) })} required type="number" step="0.01" min="0" className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Data de Vencimento</span>
-            <input name="data_vencimento" value={form.data_vencimento} onChange={handleChange} type="date" className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <input name="data_vencimento" value={form.data_vencimento || ""} onChange={handleChange} type="date" className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Período de Faturamento*</span>
-            <select name="periodo_faturamento" value={form.periodo_faturamento} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+            <select name="periodo_faturamento" value={form.periodo_faturamento || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
               <option value="MENSAL">Mensal</option>
               <option value="TRIMESTRAL">Trimestral</option>
               <option value="SEMESTRAL">Semestral</option>
@@ -136,7 +141,7 @@ export default function NovoServico() {
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Status*</span>
-            <select name="status" value={form.status} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+            <select name="status" value={form.status || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
               <option value="ATIVO">Ativo</option>
               <option value="SUSPENSO">Suspenso</option>
               <option value="CANCELADO">Cancelado</option>

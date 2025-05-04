@@ -9,12 +9,12 @@ export default function NovoCliente() {
     razao_social: "",
     nome_fantasia: "",
     cnpj_cpf: "",
-    tipo_pessoa: "PJ",
+    tipo_pessoa: "",
     segmento: "",
     origem_cliente: "",
     observacoes: "",
     tags: "",
-    status: "ATIVO"
+    status: ""
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -46,42 +46,42 @@ export default function NovoCliente() {
         <form onSubmit={handleSubmit}>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Razão Social*</span>
-            <input name="razao_social" value={form.razao_social} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <input name="razao_social" value={form.razao_social || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Nome Fantasia</span>
-            <input name="nome_fantasia" value={form.nome_fantasia} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <input name="nome_fantasia" value={form.nome_fantasia || ""} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">CNPJ/CPF*</span>
-            <input name="cnpj_cpf" value={form.cnpj_cpf} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <input name="cnpj_cpf" value={form.cnpj_cpf || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Tipo Pessoa*</span>
-            <select name="tipo_pessoa" value={form.tipo_pessoa} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+            <select name="tipo_pessoa" value={form.tipo_pessoa || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
               <option value="PJ">PJ</option>
               <option value="PF">PF</option>
             </select>
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Segmento</span>
-            <input name="segmento" value={form.segmento} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <input name="segmento" value={form.segmento || ""} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Origem Cliente</span>
-            <input name="origem_cliente" value={form.origem_cliente} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <input name="origem_cliente" value={form.origem_cliente || ""} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Observações</span>
-            <textarea name="observacoes" value={form.observacoes} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+            <textarea name="observacoes" value={form.observacoes || ""} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Tags</span>
-            <input name="tags" value={form.tags} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" placeholder="Separadas por vírgula" />
+            <input name="tags" value={form.tags || ""} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" placeholder="Separadas por vírgula" />
           </label>
           <label className="block mb-4">
             <span className="font-semibold neon-blue">Status*</span>
-            <select name="status" value={form.status} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+            <select name="status" value={form.status || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
               <option value="ATIVO">Ativo</option>
               <option value="INATIVO">Inativo</option>
               <option value="SUSPENSO">Suspenso</option>

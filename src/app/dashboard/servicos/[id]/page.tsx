@@ -11,7 +11,7 @@ export default function EditarServico() {
     cliente_id: "",
     produto_id: "",
     plano: "",
-    status: "ATIVO",
+    status: "",
   });
   // Tipagem explícita para evitar erro de TS
   type Cliente = { id: string; razao_social: string };
@@ -100,7 +100,7 @@ export default function EditarServico() {
           <form onSubmit={handleSubmit}>
             <label className="block mb-4">
               <span className="font-semibold text-[#2563eb]">Cliente*</span>
-              <select name="cliente_id" value={form.cliente_id} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+              <select name="cliente_id" value={form.cliente_id || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
                 <option value="">Selecione o cliente</option>
                 {clientes.map((c: Cliente) => (
                   <option key={c.id} value={c.id}>{c.razao_social}</option>
@@ -109,7 +109,7 @@ export default function EditarServico() {
             </label>
             <label className="block mb-4">
               <span className="font-semibold text-[#2563eb]">Produto*</span>
-              <select name="produto_id" value={form.produto_id} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+              <select name="produto_id" value={form.produto_id || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
                 <option value="">Selecione o produto</option>
                 {produtos.map((p: Produto) => (
                   <option key={p.id} value={p.id}>{p.nome}</option>
@@ -118,11 +118,16 @@ export default function EditarServico() {
             </label>
             <label className="block mb-4">
               <span className="font-semibold text-[#2563eb]">Plano</span>
-              <input name="plano" value={form.plano} onChange={handleChange} className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none" />
+              <input
+                name="plano"
+                value={form.plano || ""}
+                onChange={handleChange}
+                className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none"
+              />
             </label>
             <label className="block mb-4">
               <span className="font-semibold text-[#2563eb]">Status*</span>
-              <select name="status" value={form.status} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
+              <select name="status" value={form.status || ""} onChange={handleChange} required className="w-full border-none bg-[#232526] text-white p-3 rounded-lg mt-1 focus:ring-2 focus:ring-blue-400 outline-none">
                 <option value="ATIVO">Ativo</option>
                 <option value="INATIVO">Inativo</option>
                 <option value="SUSPENSO">Suspenso</option>
