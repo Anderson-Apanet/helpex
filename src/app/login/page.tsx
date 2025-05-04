@@ -5,12 +5,6 @@ import { supabase } from "../../lib/supabase";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
 
-interface User {
-  email: string;
-  password: string;
-  nome: string;
-}
-
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
