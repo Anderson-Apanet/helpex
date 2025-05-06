@@ -13,8 +13,6 @@ export default function Header() {
         <Link href="/dashboard" className="font-bold neon-blue hover:text-[#60a5fa] transition">Dashboard</Link>
         <Link href="/dashboard/clientes" className="font-bold neon-blue hover:text-[#3b82f6] transition">Clientes</Link>
         <Link href="/dashboard/servicos" className="font-bold neon-orange hover:text-[#60a5fa] transition">Serviços</Link>
-        <Link href="/dashboard/relatorios" className="font-bold neon-blue hover:text-[#f58a42] transition">Relatórios</Link>
-        <Link href="/dashboard/credenciais" className="font-bold neon-blue hover:text-[#f58a42] transition">Credenciais</Link>
       </nav>
     </header>
   );

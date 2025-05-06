@@ -65,8 +65,12 @@ export default function Login() {
     setForgotLoading(true);
     setForgotError("");
     setForgotSuccess("");
+    let redirectTo: string | undefined = undefined;
+    if (typeof window !== "undefined") {
+      redirectTo = window.location.origin + "/login";
+    }
     const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
-      redirectTo: window.location.origin + "/login"
+      redirectTo
     });
     setForgotLoading(false);
     if (error) {
@@ -79,18 +83,18 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0f2027] via-[#232526] to-[#2c5364] text-white font-sans p-4">
       <div className="flex flex-col items-center mb-8">
-        <Image src="https://dieycvogftvfoncigvtl.supabase.co/storage/v1/object/public/imagens//HELPEX%20BRANCO.png" alt="HELPEX Logo" className="h-16 w-auto mb-4 drop-shadow-lg" style={{filter: 'drop-shadow(0 0 10px #4f6df5)'}} width={100} height={50} />
+        <Image src="https://dieycvogftvfoncigvtl.supabase.co/storage/v1/object/public/imagens//HELPEX%20BRANCO.png" alt="HELPEX Logo" className="h-16 w-auto mb-4" width={100} height={50} />
       </div>
-      <div className="bg-[#181f2a] border border-[#4f6df5] neon-blue rounded-xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
+      <div className="bg-[#181f2a] border border-[#4f6df5] rounded-xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
         {!showRegister && !showForgot && (
           <form onSubmit={handleLogin}>
-            <h2 className="text-2xl font-bold mb-6 text-center neon-blue">Login</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
             <input
               type="email"
               placeholder="E-mail"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="w-full mb-4 p-3 rounded-lg bg-[#232526] text-white neon-blue border-none focus:ring-2 focus:ring-[#2563eb]"
+              className="w-full mb-4 p-3 rounded-lg bg-[#232526] text-white border-none focus:ring-2 focus:ring-[#2563eb]"
               required
             />
             <input
@@ -98,13 +102,13 @@ export default function Login() {
               placeholder="Senha"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="w-full mb-4 p-3 rounded-lg bg-[#232526] text-white neon-green border-none focus:ring-2 focus:ring-[#2563eb]"
+              className="w-full mb-4 p-3 rounded-lg bg-[#232526] text-white border-none focus:ring-2 focus:ring-[#2563eb]"
               required
             />
             {error && <div className="text-red-400 bg-[#1a1a1a] rounded p-3 mb-4 border-l-4 border-red-600 shadow-md animate-fade-in text-center">{error}</div>}
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-green-400 shadow-lg neon-green text-black px-6 py-3 rounded-lg font-bold text-lg transition-all duration-200 hover:scale-105 hover:from-orange-400 hover:to-pink-500 hover:text-white border-none"
+              className="w-full bg-[#232526] text-white px-6 py-3 rounded-lg font-semibold text-lg border border-[#353b48] shadow-sm transition-all duration-200 hover:bg-[#353b48] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:ring-offset-2 disabled:opacity-60"
               disabled={loading}
             >
               {loading ? "Entrando..." : "Entrar"}
@@ -203,9 +207,6 @@ export default function Login() {
         )}
       </div>
       <style jsx global>{`
-        .neon-blue { text-shadow: 0 0 8px #2563eb, 0 0 12px #60a5fa; color: #2563eb; }
-        .neon-orange { text-shadow: 0 0 6px #f58a42, 0 0 10px #ffd700; color: #f58a42; }
-        .neon-green { text-shadow: 0 0 8px #2563eb, 0 0 14px #60a5fa; color: #2563eb; }
         .animate-fade-in { animation: fadeIn 0.7s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
       `}</style>
