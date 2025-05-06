@@ -8,9 +8,10 @@ function exportarRelatorio() {
 }
 
 // Arquivo removido: módulo Relatórios descontinuado
-
 export default function Relatorios() {
   return (
-    // Arquivo removido: módulo Relatórios descontinuado
+    <div style={{padding: 32, textAlign: 'center', color: 'var(--primary)'}}>
+      Módulo de Relatórios descontinuado.
+    </div>
   );
 }
